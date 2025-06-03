@@ -1,0 +1,80 @@
+name = "epic-tech-ai" # Your project name for Cloudflare Workers/Pages
+compatibility_date = "2024-01-01" # Use a recent compatibility date
+
+# Main entry point for Workers (if you separate API logic)
+# main = "src/worker.ts" # Example if you have a worker script
+
+[env.production]
+name = "epic-tech-ai-production"
+# route = { pattern = "your-domain.com/*", zone_name = "your-domain.com" } # For Workers
+# routes = [ { pattern = "your-domain.com/*", zone_id = "YOUR_ZONE_ID" } ] # Alternative for Workers
+# pages_build_output_dir = "./out" # For Pages, if using static export from Next.js
+# pages_build_command = "npm run build && npm run export" # For Pages, if using static export
+
+# Environment variables for production
+# [env.production.vars]
+# DATABASE_URL = "your_production_database_url"
+# NEXTAUTH_SECRET = "your_production_nextauth_secret"
+# ... other production secrets
+
+[env.staging]
+name = "epic-tech-ai-staging"
+# route = { pattern = "staging.your-domain.com/*", zone_name = "your-domain.com" }
+# pages_build_output_dir = "./out"
+
+# Environment variables for staging
+# [env.staging.vars]
+# DATABASE_URL = "your_staging_database_url"
+# ... other staging secrets
+
+# KV Namespaces (example)
+# [[kv_namespaces]]
+# binding = "CACHE_KV"
+# id = "your_kv_namespace_id_for_prod"
+# preview_id = "your_kv_namespace_id_for_preview"
+
+# R2 Buckets (example)
+# [[r2_buckets]]
+# binding = "STORAGE_R2"
+# bucket_name = "your-r2-bucket-name-prod"
+# preview_bucket_name = "your-r2-bucket-name-preview"
+
+# Durable Objects (example)
+# [[durable_objects.bindings]]
+# name = "CHAT_DO"
+# class_name = "ChatDurableObject" # Name of the DO class in your worker code
+
+# Analytics Engine (example)
+# [[analytics_engine_datasets]]
+# binding = "USAGE_ANALYTICS"
+# dataset = "your_analytics_dataset_name"
+
+# Build configuration for Cloudflare Pages (if deploying Next.js app directly)
+[pages_build_output_dir] # This section is for Cloudflare Pages
+# If your Next.js app is at the root and uses default output:
+dir = ".next"
+# If your Next.js app is in a subdirectory like 'frontend' and uses default output:
+# dir = "frontend/.next"
+# If you use `next export` (static site generation):
+# dir = "out" # or "frontend/out"
+
+# Site configuration for Cloudflare Pages
+[site]
+bucket = "./.next" # Default Next.js output directory for server components
+# If your Next.js app is in a subdirectory like 'frontend':
+# bucket = "./frontend/.next"
+# If you use `next export` (static site generation):
+# bucket = "./out" # or "./frontend/out"
+
+# Example for a Worker that might proxy to a Next.js app or handle API
+# [build]
+# command = "npm run build" # Command to build your worker
+# cwd = "path/to/your/worker_code" # Directory of your worker code
+Important Notes for wrangler.toml:
+
+This wrangler.toml is a general template. You'll need to uncomment and configure sections based on whether you're deploying a Next.js app directly to Cloudflare Pages, a separate API Worker, or a combination.
+For deploying a Next.js app (especially with App Router), Cloudflare Pages is the more direct approach. The [pages_build_output_dir] and [site] sections are key for this.
+If your API routes are part of your Next.js app, they will be deployed with the Pages project. If you have separate API workers, you'd configure them differently (e.g., using main and [build] for the worker).
+Replace all placeholder values like your-domain.com, YOUR_ZONE_ID, your_kv_namespace_id_for_prod, etc., with your actual Cloudflare details.
+The route or routes configuration depends on whether you are deploying a Worker to a specific route or a Pages project to a domain.
+Refer to the official Cloudflare Wrangler and Pages documentation for the most up-to-date and specific configurations for Next.js.
