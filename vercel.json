@@ -51,14 +51,6 @@
       "NEXT_PUBLIC_ENABLE_API_ACCESS": "true"
     }
   },
-  "functions": {
-    "src/app/api/generate/route.ts": {
-      "maxDuration": 30
-    },
-    "src/app/api/webhooks/stripe/route.ts": {
-      "maxDuration": 10
-    }
-  },
   "headers": [
     {
       "source": "/api/(.*)",
